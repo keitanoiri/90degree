@@ -1,0 +1,56 @@
+using Photon.Pun.Demo.Asteroids;
+using Photon.Pun;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
+
+public class Fastshot : SkillBase
+// Start is called before the first frame update
+{
+    float speed = 0.5f;
+
+    private void Awake()
+    {
+        skillName="FastShot";
+        skillExprain="素早くつがえて矢を放つ。\n威力と速さは控えめ";
+
+        DrowCost=1;
+        DrowRate=2.0f;
+        DamageReflectionRate = 0.7f;
+    }
+    public override void Shoot()
+    {
+        //基本的にマウスが離されたときに行う
+        if(pc.CanShoot == true)
+        {
+            pc.bulletid++;//球のIDを追加
+            pc.photonView.RPC(nameof(pc.Fire), RpcTarget.All, pc.bulletid, pc.gravityForce, pc.firepos.position, pc.firepos.rotation,pc.BaseDamage*DamageReflectionRate,speed);
+            pc.CanShoot = false;
+
+            anicon.PlayShotAnimation();
+        }
+        anicon.ResetAimAnimations();
+        
+    }
+
+    public override void Drow()
+    {
+        //基本的にマウスが押されたときに行う
+        //矢を消費
+        if (pc.NowArrowNum < DrowCost)
+        {
+            //足りない音で知らせる？
+            return;
+        }
+        pc.NowArrowNum-=DrowCost;
+        pc.characterUI.ChengeRemainArrowNumText(pc.NowArrowNum, pc.MaxArrowNum);
+
+        //つがえるアニメーション
+        anicon.PlayDrowAnimation(DrowRate);
+    }
+
+
+
+
+}
