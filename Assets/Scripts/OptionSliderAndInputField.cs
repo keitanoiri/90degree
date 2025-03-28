@@ -26,6 +26,7 @@ public class OptionSliderAndInputField : MonoBehaviour
         if(float.TryParse(input,out float inputfloat))
         {
             inputfloat = Mathf.Clamp(inputfloat,0,100);
+            inputfloat = Mathf.Floor(inputfloat * 10) / 10;
             previousText = inputfloat.ToString();
             previousText = Field.text;
             Slider.value = inputfloat;
@@ -38,7 +39,8 @@ public class OptionSliderAndInputField : MonoBehaviour
 
     void OnSliderChenged(float input)
     {
-        Field.text = input.ToString();
+        float chenge = Mathf.Floor(input * 10) / 10;
+        Field.text = chenge.ToString();
     }
 
     // オブジェクトが破棄されるときにリスナーを解除

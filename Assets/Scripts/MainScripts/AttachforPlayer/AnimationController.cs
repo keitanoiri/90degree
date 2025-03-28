@@ -44,6 +44,9 @@ public class AnimationController : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine&&playerController.canMove)
         {
+            if(Input.GetMouseButton(0)==true) SetMoveAnimationSpeed(0.5f);
+            else SetMoveAnimationSpeed(1f);
+
             moveanimation();
             //aimanimation();
         }
@@ -147,6 +150,11 @@ public class AnimationController : MonoBehaviourPunCallbacks
             }
         }
         deltamove = horizontalkey + verticalkey;
+    }
+
+    public void SetMoveAnimationSpeed(float speed)
+    {
+        anim.SetFloat("MoveSpeed",speed);
     }
 
     public void ResetAimAnimations()

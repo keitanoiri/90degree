@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class PlayerController: MonoBehaviourPunCallbacks
 {
     //注意カメラの方向制御はアニメーションコントローラーで行っている。
-    Quaternion test;
+    Quaternion nowRotation;
 
     public float movePower = 300f; // 移動速度
     public float moveSpeed = 10f; // 移動速度
@@ -224,7 +224,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
                 elapsedTime = 0f;
                 Quaternion fromToRotation = Quaternion.FromToRotation(Character.transform.up, PlayerCamera.transform.forward*-1);
                 targetToRotation = fromToRotation * Character.transform.rotation;
-                test = Character.transform.rotation;
+                nowRotation = Character.transform.rotation;
             }
             else
             {
@@ -242,7 +242,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
                     targetToRotation = fromToRotation * Character.transform.rotation;
 
-                    test = Character.transform.rotation;
+                    nowRotation = Character.transform.rotation;
                 }
             }
         }
@@ -255,7 +255,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
             gravityForce = targetToRotation * Vector3.up * gravity;
 
-            test = Character.transform.rotation;
+            nowRotation = Character.transform.rotation;
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -266,11 +266,11 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
             gravityForce = targetToRotation * Vector3.up * gravity;
 
-            test = Character.transform.rotation;
+            nowRotation = Character.transform.rotation;
         }
         if (elapsedTime < duration)
         {
-            Character.transform.rotation = Quaternion.Slerp(test,targetToRotation, elapsedTime / duration);
+            Character.transform.rotation = Quaternion.Slerp(nowRotation,targetToRotation, elapsedTime / duration);
         }
     }
     private void Gravity()
