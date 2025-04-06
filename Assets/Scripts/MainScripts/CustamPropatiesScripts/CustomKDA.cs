@@ -4,6 +4,7 @@ using System.Globalization;
 
 public static class CustomKDA
 {
+    //KillDeathScoreとHP用のカスタムプロパティ(なぜか被弾時にHPがたまに増える？なんで？)
     private const string Killkey = "Kill";
     private const string Deathkey = "Death";
     private const string Scorekey = "Score";

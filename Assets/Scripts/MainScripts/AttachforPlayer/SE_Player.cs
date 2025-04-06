@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SE_Player : MonoBehaviour
 {
+    //SE‚Ì‚³‚¢‚¹‚¢‚æ‚¤
+
     [SerializeField] private AudioSource AudioSource;
     [SerializeField] private AudioClip drow;
     [SerializeField] private AudioClip shot;
@@ -13,18 +15,6 @@ public class SE_Player : MonoBehaviour
     [SerializeField] private AudioClip ItemSE;
     [SerializeField] private AudioClip hitSE;
     [SerializeField] private AudioClip killSE;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SEdrow()
     {

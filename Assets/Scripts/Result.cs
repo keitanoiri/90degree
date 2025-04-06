@@ -8,6 +8,7 @@ public class Result : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] TextMeshProUGUI winnername;
+    [SerializeField] ReaderBoard RB;
     private StringBuilder winnernameBuilder;
     private string winnickname;
     private int bestkill;
@@ -15,14 +16,12 @@ public class Result : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        //タイムスケールを戻す
+        //タイムスケールを戻す(直前のシーンで遅くしている）
         Time.timeScale = 1.0f;
 
+        //勝者が誰か表示する
         winnernameBuilder = new StringBuilder();
-
         var players = PhotonNetwork.PlayerList;
-
-
         foreach (var player in players)
         {
             if (winnickname == null)
@@ -36,34 +35,35 @@ public class Result : MonoBehaviourPunCallbacks
                 bestkill = player.GetKill();
             }
         }
-
-        winnernameBuilder.AppendLine($"{winnickname}" +" Win");
+        winnernameBuilder.AppendLine($"{winnickname}" +"の勝ち！");
         winnername.text = winnernameBuilder.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //リーダーボード更新を停止
+        RB.enabled = false;
     }
 
+    //抜ける処理
     public void quit()
     {
         PhotonNetwork.LeaveRoom();
     }
+    //ルームから抜けたらタイトルへ
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-
         SceneManager.LoadScene("Title");
     }
 
+    //
     public void remutch()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.DestroyAll();
-        }
+        //rematchする際にすべてのネットワークオブジェクトを破壊することで同期ズレを防ぐ
+        PhotonNetwork.DestroyAll();
+        //ロビー画面をロード
         PhotonNetwork.LoadLevel("Roby");
     }
 

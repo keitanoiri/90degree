@@ -24,8 +24,18 @@ public class TryShot : SkillBase
             for (int i = 0; i < 3; i++)
             {
                 pc.bulletid++;//球のIDを追加
-                Quaternion rotationDelta = Quaternion.AngleAxis((i * 3f) - 3f, pc.gravityForce);
-                pc.photonView.RPC(nameof(pc.Fire), RpcTarget.All, pc.bulletid, pc.gravityForce, pc.firepos.position, pc.firepos.rotation * rotationDelta, pc.BaseDamage * DamageReflectionRate);
+                //Quaternion rotationDelta = Quaternion.AngleAxis((i * 3f) - 3f, pc.firepos.forward);
+                //pc.photonView.RPC(nameof(pc.Fire), RpcTarget.All, pc.bulletid, pc.gravityForce, pc.firepos.position, pc.firepos.rotation * rotationDelta, pc.BaseDamage * DamageReflectionRate);
+
+                // 現在のローカル回転角を取得
+                Vector3 currentLocalEuler = pc.firepos.localEulerAngles;
+                // Y軸に角度を加算（例：15度）
+                currentLocalEuler.y += ((i * 3f)-3f);
+                // Quaternionとして返す
+                Quaternion modifiedRotation = Quaternion.Euler(currentLocalEuler);
+                //ワールド変換
+                Quaternion worldRotation = pc.firepos.parent.rotation * modifiedRotation;
+                pc.photonView.RPC(nameof(pc.Fire), RpcTarget.All, pc.bulletid, pc.gravityForce, pc.firepos.position, worldRotation, pc.BaseDamage * DamageReflectionRate);
             }
 
             pc.CanShoot = false;

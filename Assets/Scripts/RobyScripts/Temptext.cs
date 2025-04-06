@@ -5,8 +5,7 @@ using TMPro;
 
 public class Temptext : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
+    //ロードアウトアイコンの一次テキスト用スクリプト
     [SerializeField]private TextMeshProUGUI textMeshProUGUI;
     //[SerializeField]private RectTransform IconsCanvas;
 

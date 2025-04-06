@@ -21,6 +21,7 @@ public class RoadOutIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // Start is called before the first frame update
     void Start()
     {
+        //SkillBase‚©‚çŠeíî•ñ‚ğ‚Á‚Ä‚«‚Ä•\¦‚·‚é
         GetComponent<Image>().sprite = sprite;
         SkillBase skillbase = GetComponent<SkillBase>();
         StringBuilder sb = new StringBuilder();

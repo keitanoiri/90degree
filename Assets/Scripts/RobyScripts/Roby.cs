@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Roby : MonoBehaviourPunCallbacks
 {
     private float elapsedTime;
-    [SerializeField]GameObject OptionMenu;
+    [SerializeField] GameObject OptionMenu;
     [SerializeField] GameObject RoadOutMenu;
 
     // Start is called before the first frame update
@@ -14,17 +14,15 @@ public class Roby : MonoBehaviourPunCallbacks
         elapsedTime = 0f;
         //受け取り再開
         PhotonNetwork.CurrentRoom.IsOpen = true;  // ルームを開放する（マスタークライアントに限定すべきかも
-        //スコア初期化
-        if (PhotonNetwork.IsMasterClient)
+        //自身のスコアを初期化
+        var players = PhotonNetwork.PlayerList;
+        foreach (var player in players)
         {
-            var players = PhotonNetwork.PlayerList;
-            foreach (var player in players)
-            {
-                player.SetKill(0);
-                player.SetDeath(0);
-                player.SetScore(0);
-            }
+            player.SetKill(0);
+            player.SetDeath(0);
+            player.SetScore(0);
         }
+
     }
 
     // Update is called once per frame
@@ -42,12 +40,12 @@ public class Roby : MonoBehaviourPunCallbacks
         }
     }
 
-    private void CheckReady()
+    private void CheckReady()//全てのプレイヤーがReadyならゲーム開始
     {
         var players = PhotonNetwork.PlayerList;
-        foreach(var player in players)
+        foreach (var player in players)
         {
-            if(player.GetIsReady() == string.Empty)
+            if (player.GetIsReady() == string.Empty)
             {
                 return;
             }
@@ -59,14 +57,14 @@ public class Roby : MonoBehaviourPunCallbacks
         }
 
         PhotonNetwork.CurrentRoom.IsOpen = false;  // ルームを閉じて入室できないようにする
-        photonView.RPC(nameof(LoadScene), RpcTarget.All);
-        
+        photonView.RPC(nameof(LoadScene), RpcTarget.All);//シーンをロード
+
     }
 
     [PunRPC]
     public void LoadScene()
     {
-        PhotonNetwork.IsMessageQueueRunning = false;
+        PhotonNetwork.IsMessageQueueRunning = false;    //シーンが読み込まれるまでネットワークメッセージを停止
         SceneManager.LoadScene("Main2");
     }
 

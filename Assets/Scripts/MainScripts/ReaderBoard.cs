@@ -22,6 +22,8 @@ public class ReaderBoard : MonoBehaviour
         deathBuilder = new StringBuilder();
         scoreBuilder = new StringBuilder();
         elapsedTime = 0f;
+
+        UpdateLabel();
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class ReaderBoard : MonoBehaviour
         //ルームに参加していなければやらない
         if (!PhotonNetwork.InRoom) { return; }
 
+        //一定時間ごとに更新（）
         elapsedTime += Time.deltaTime;
         if (elapsedTime > 0.2f)
         {
@@ -38,6 +41,7 @@ public class ReaderBoard : MonoBehaviour
         }
     }
 
+    //文章を変更する関数
     private void UpdateLabel() {
         var players = PhotonNetwork.PlayerList;
         nameBuilder.Clear();

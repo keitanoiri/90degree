@@ -2,7 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 public class ItemBase : MonoBehaviourPunCallbacks
 {
-
+    //ベースといいつつ現状弾丸補充アイテム専用になっている(要拡張)
     [SerializeField] private AudioSource AudioSource;
 
     private void Start()
@@ -12,20 +12,18 @@ public class ItemBase : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        this.transform.Rotate(Vector3.up, 0.1f);
+        this.transform.Rotate(Vector3.up, 0.1f);//回転させる
     }
     
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter(Collider collider)//接触したのがプレイヤーなら(Ismineに限定すべきかも要件等)
     {
-
-
         if (collider.tag == "Player")
         {
             ItemActivate(collider);
         }
     }
 
-    private void ItemActivate(Collider co)
+    private void ItemActivate(Collider co)//アイテム効果を発動
     {
         Transform current = co.gameObject.transform;
 

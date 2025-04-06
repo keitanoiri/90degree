@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class RoadOutSerectedIcon : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+
+    //ロードアウトの下側のアイコン用のスクリプト
     [SerializeField] int iconindex;
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class RoadOutSerectedIcon : MonoBehaviour,IPointerEnterHandler, IPointerE
         //Destroy(temptext);
     }
 
+    //このアイコンが選択されたことを示す
     public void OnPointerClick(PointerEventData eventData)
     {
         //切り替える役割

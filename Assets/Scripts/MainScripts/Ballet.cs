@@ -3,14 +3,21 @@ using UnityEngine;
 
 public class Ballet : MonoBehaviourPunCallbacks
 {
+    /// <summary>
+    /// /矢に付けるスクリプト
+    /// </summary>
+
+    //アタッチした対象のRightBody
     [SerializeField]private Rigidbody rb;
+    //矢のベースの速さ
     [SerializeField] private float speed;
-    [SerializeField] private float gravity;
+    //接触判定用のコライダーを設定しておく
     [SerializeField] public SphereCollider hitCollider;
     public Vector3 gravityForce;
     
-
+    //ベースダメージ
     [SerializeField] public int damage;
+    //持続時間（寿命）
     [SerializeField] float life = 20;
 
     [SerializeField] TrailRenderer trailRenderer;
@@ -34,7 +41,7 @@ public class Ballet : MonoBehaviourPunCallbacks
         rb.AddForce(transform.forward * speed,ForceMode.Impulse);
         ChengeTrailColor(damage);
     }
-
+    //初期設定(バリエーション)
     public void Init(int id, int ownerId, Vector3 gravityangle, Vector3 pos, Quaternion rotate, float DAMAGE,float SPEED)
     {
         Id = id;
@@ -64,7 +71,7 @@ public class Ballet : MonoBehaviourPunCallbacks
     {
         rb.AddForce(gravityForce, ForceMode.Acceleration);
     }
-
+    //ダメージによって軌道を変更する
     private void ChengeTrailColor(int DAMAGE)
     {
         if (DAMAGE >= 100)
@@ -93,11 +100,10 @@ public class Ballet : MonoBehaviourPunCallbacks
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             //rb.velocity = Vector3.zero;
-
             // 角速度もゼロにして回転も停止
             //rb.angularVelocity = Vector3.zero;
-
             // 必要に応じてRigidbodyの動作を完全に停止する
+
             rb.isKinematic = true;
         }
     }

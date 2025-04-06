@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class KillCam : MonoBehaviourPunCallbacks
 {
+
+    //倒されたときに生成するカメラ(ここでリスポーン処理をGMにさせている)
     GameManager GM;
     float yRotation=0;
     float xRotation=0;

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public abstract class SkillBase : MonoBehaviour
 {
+    /// <summary>
+    /// /スキルようのベーススクリプト
+    /// </summary>
+
     public string skillName;
     public string skillExprain;
 
@@ -17,6 +21,7 @@ public abstract class SkillBase : MonoBehaviour
     //
     private void Start()
     {
+        //プレイヤーコントローラーとアニメーションコントローラーを最初に取得する
         if (TryGetComponent<PlayerController>(out pc))
         {
             Debug.Log("Succsess Get PlayerController");

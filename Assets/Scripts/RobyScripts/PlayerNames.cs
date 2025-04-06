@@ -36,6 +36,7 @@ public class PlayerNames : MonoBehaviourPunCallbacks
 
     private void UpdateLabel()
     {
+        //プレイヤー名をロビーで表示する
         var players = PhotonNetwork.PlayerList;
         
         builder.Clear();

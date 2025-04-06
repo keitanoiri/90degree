@@ -407,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3643152082004348267
 Transform:
   m_ObjectHideFlags: 0
@@ -422,7 +422,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 113992681681880257}
-  m_Father: {fileID: 5063216302102690195}
+  m_Father: {fileID: 1324075434494119936}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4573336941290096525
 MeshFilter:
@@ -968,6 +968,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3643152082004348267}
   - {fileID: 6874827459488419962}
   - {fileID: 4256108627428213117}
   m_Father: {fileID: 5063216302102690195}
@@ -5382,7 +5383,6 @@ Transform:
   - {fileID: 1324075434494119936}
   - {fileID: 2998568746023214590}
   - {fileID: 7776138013598576838}
-  - {fileID: 3643152082004348267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1899999551032169983
@@ -5503,7 +5503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
+  m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 0
 --- !u!114 &4062537256294725829

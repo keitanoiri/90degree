@@ -17,6 +17,7 @@ public class RoadOutMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ////初期設定(現在の設定されたスキルアイコンを表示)
         skills[0] = PlayerPrefs.GetInt("Skill0", 0);
         skills[1] = PlayerPrefs.GetInt("Skill1", 1);
         skills[2] = PlayerPrefs.GetInt("Skill2", 2);
@@ -38,6 +39,7 @@ public class RoadOutMenu : MonoBehaviour
 
     public void ChengeIconImage(int IconNum, Sprite ChengeSprite)
     {
+        //Iconを差し替え
         IconImages[IconNum].sprite = ChengeSprite;
     }
 }

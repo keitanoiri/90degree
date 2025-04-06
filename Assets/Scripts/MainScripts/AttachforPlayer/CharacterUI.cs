@@ -22,7 +22,7 @@ public class CharacterUI : MonoBehaviourPunCallbacks
             GameObject GMObje = GameObject.Find("GameManager");
             if (GMObje != null)
             {
-                if (GMObje.TryGetComponent<GameManager>(out GameManager gm))
+                if (GMObje.TryGetComponent<GameManager>(out GameManager gm))//スキルのスプライトを取得
                 {
                     firemode[0].sprite = gm.Skill0Sprite;
                     firemode[1].sprite = gm.Skill1Sprite;
@@ -52,12 +52,12 @@ public class CharacterUI : MonoBehaviourPunCallbacks
         }
     }
 
-    public void ChengeRemainArrowNumText(int remainarrownum,int maxarrownum)
+    public void ChengeRemainArrowNumText(int remainarrownum,int maxarrownum)//残りの矢の本数を表示
     {
         RemainArrows.text = remainarrownum.ToString()+"/"+maxarrownum.ToString();
     }
 
-    public void firemodeUI(int firemodeint)
+    public void firemodeUI(int firemodeint)//現在の選択されたスキルがどれか表示
     {
         if(firemodeint<= firemode.Length)
         {

@@ -1,12 +1,11 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HP : MonoBehaviourPunCallbacks
 {
+    //HP表示用スクリプト(ダメージに応じて画面を赤くしてる)
     private int MaxHP;
     [SerializeField] private TextMeshProUGUI playername;
     [SerializeField] private Image Damage;

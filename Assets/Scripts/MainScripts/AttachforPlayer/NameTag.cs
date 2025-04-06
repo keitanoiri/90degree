@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class NameTag : MonoBehaviourPunCallbacks
 {
+    //プレイヤー名を表示するためのスクリプト
+
     [SerializeField] GameObject target;
     [SerializeField] GameObject nameObject;
     private TextMeshProUGUI nametext;
     [SerializeField] Transform PlayerTransformCenter;
-    //private RectTransform namepos;
-
     private Camera activeCamera;
     
+
     void Start()
     {
         nametext = nameObject.GetComponent<TextMeshProUGUI>();
@@ -34,7 +35,10 @@ public class NameTag : MonoBehaviourPunCallbacks
             return;
         }
 
+        //プレイヤーとの間に障害物があった時に非表示にするためのスクリプト(試験的に削除中）
+        /*
         //Cameraからプレイヤーに向けたベクトルの計算
+        
         Vector3 directionToCamera = activeCamera.transform.position-PlayerTransformCenter.position;
         RaycastHit hit;
 
@@ -47,6 +51,7 @@ public class NameTag : MonoBehaviourPunCallbacks
                 return;
             }
         }
+        */
 
         //プレイヤーの位置をカメラから見た位置に変換
         // プレイヤーの頭上の位置にネームタグを表示

@@ -34,6 +34,7 @@ public class OptionAppryAndCancel : MonoBehaviour
 
     public void OnClickAppry()
     {
+        //’l‚ğİ’è
         PlayerPrefs.SetFloat("MasterVolume", MasterSlider.value);
         PlayerPrefs.SetFloat("BGMVolume", BGMSlider.value);
         PlayerPrefs.SetFloat("SEVolune", SESlider.value);

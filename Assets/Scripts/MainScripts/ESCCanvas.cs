@@ -39,7 +39,10 @@ public class ESCCanvas : MonoBehaviourPunCallbacks
     public void OptionsButton() {
         Instantiate(OptionsCanvas);
     }
-    public void QuitButton() { PhotonNetwork.LeaveRoom(); }
+    public void QuitButton() { 
+
+        PhotonNetwork.LeaveRoom(); 
+    }
 
     public override void OnLeftRoom()
     {

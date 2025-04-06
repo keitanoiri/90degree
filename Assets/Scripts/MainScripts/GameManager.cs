@@ -7,11 +7,15 @@ using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    //ゲームの全体進行管理用スクリプト
+
     public GameObject MyCharacter;
     [SerializeField] private GameObject ReaderBoard;
     [SerializeField] private GameObject ESCmenu;
     [SerializeField] public float RespownTime;
+    //勝利条件のためのkill数を設定
     [SerializeField] private int WinKill;
+    //リスポーンのための場所を設定
     [SerializeField] private GameObject[] respawnAreas;
     [SerializeField] private double spawnInterval;
     [SerializeField] private int MaxItem;
@@ -92,7 +96,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         wincheck();
     }
-
+    //キャラクターを動けるようにする
     public void enableToMove()
     {
         if (MyCharacter != null)
@@ -113,6 +117,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogWarning("MyCharacter が null です。");
         }
     }
+
+    //キャラクターを動けなくさせる
     public void anenableToMove()
     {
         if (MyCharacter != null)
@@ -159,6 +165,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.Log("Randam失敗");
         }
     }
+
+    //プレイヤーをリスポーンさせるスクリプト
     public async void RespownPlayer()
     {
         if (!isNotRespowning)
@@ -180,6 +188,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
     
+    //勝利条件を満たしたプレイヤーがいるかのチェック
     private void wincheck()
     {
         if (PhotonNetwork.IsMasterClient) {
@@ -194,6 +203,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    //アイテムスポーンのための関数
     private async UniTask SpawnItemsAsync()
     {
         GameObject[] gm = GameObject.FindGameObjectsWithTag("Item");
@@ -247,7 +257,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-
+    //勝利時に動かすスクリプト
     [PunRPC]
     async public void win(Photon.Realtime.Player player)
     {
@@ -256,6 +266,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         pose = true;//updateを停止
         // カーソルをロックして画面の中心に固定を解除
         Cursor.lockState = CursorLockMode.None;
+        //リーダーボードを表示
+        ReaderBoard.SetActive(true);
         //スローにする
         Time.timeScale = 0.2f;
         //スローにして一秒後に画面遷移
@@ -263,6 +275,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Result");
     }
 
+    //ルームのオーナーが変わった時にアイテム生成を肩代わりする
     async public override void OnMasterClientSwitched(Player newMasterClient)
     {
         await SpawnItemsAsync();

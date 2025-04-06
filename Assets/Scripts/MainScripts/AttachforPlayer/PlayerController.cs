@@ -42,7 +42,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject Killcam;
     [SerializeField] public SE_Player SE;
-    [SerializeField] private Transform Character;
+    [SerializeField] public Transform Character;
     [SerializeField] Transform IKRoot;
     [SerializeField] Transform IKtarget;
     [SerializeField] Transform HeadPos;
@@ -80,9 +80,8 @@ public class PlayerController: MonoBehaviourPunCallbacks
     private void Awake()
     {
         PlayerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        targetToRotation = transform.rotation;
-        gravityForce = transform.up * gravity;
+        targetToRotation = transform.rotation;//キャラクターの方向を設定
+        gravityForce = transform.up * gravity;//重力を再設定
 
 
         rb = GetComponent<Rigidbody>();
@@ -100,15 +99,15 @@ public class PlayerController: MonoBehaviourPunCallbacks
         MaxArrowNum = 15;
         NowArrowNum = MaxArrowNum;
 
-
+        //自分の生成したキャラクターなら
         if (photonView.IsMine)
         {
             //Skillコンポーネントの追加
             int skillindex1 = PlayerPrefs.GetInt("Skill0", 0);
             Skill1 = (SkillBase)gameObject.AddComponent(SkillType[skillindex1]);
-            int skillindex2 = PlayerPrefs.GetInt("Skill1", 0);
+            int skillindex2 = PlayerPrefs.GetInt("Skill1", 1);
             Skill2 = (SkillBase)gameObject.AddComponent(SkillType[skillindex2]);
-            int skillindex3 = PlayerPrefs.GetInt("Skill2", 0);
+            int skillindex3 = PlayerPrefs.GetInt("Skill2", 2);
             Skill3 = (SkillBase)gameObject.AddComponent(SkillType[skillindex3]);
 
             //生成時に感度を設定
@@ -141,24 +140,26 @@ public class PlayerController: MonoBehaviourPunCallbacks
                 rb.angularVelocity = Vector3.zero;    // 回転速度をゼロに設定
             }
 
-            WeaponSistems();
-            ChengeGravity();
-            Jamp();
-            CameraIKControl();
+            WeaponSistems();//攻撃関連
+            ChengeGravity();//重力変更関係
+            Jamp();//ジャンプ
+            CameraIKControl();//カメラ移動
 
-            ParticleCheck();
+            
 
         }
+        ParticleCheck();//パーティクル(シールド)が持続しているか？
     }
 
     private void FixedUpdate()
     {
         if (photonView.IsMine)
         {
-            Gravity();
-            if (canMove)Move();
+            Gravity();//重力を加える
+            if (canMove)Move();//移動する
         }
     }
+    //ジャンプ(Space)
     private void Jamp()
     {
         if(IsGround==true&&Input.GetKeyDown(KeyCode.Space)==true)
@@ -174,14 +175,13 @@ public class PlayerController: MonoBehaviourPunCallbacks
         // 入力の取得
         float moveHorizontal = Input.GetAxis("Horizontal"); // A, Dキー
         float moveVertical = Input.GetAxis("Vertical"); // W, Sキー
-                                                        // 移動方向の計算
+        
+        // 移動方向の計算
         Vector3 movement = Character.right * moveHorizontal + Character.forward * moveVertical;
         movement.Normalize();
 
         //坂道対応
         //前方にレイを飛ばす
-        
-
         RaycastHit hit;
 
         if(IsGround==true && Physics.Raycast(transform.position + (movement * 0.1f)+(Character.transform.up*0.2f), movement*1f, out hit,0.5f))
@@ -193,33 +193,35 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
 
         
-        if (IsGround == true&&!Input.GetMouseButton(0))
+        if (IsGround == true&&!Input.GetMouseButton(0))//普通の歩き(速度を直接いじる)
         {
             Vector3 projectedVelocity = Vector3.Project(rb.velocity, Character.transform.up);
             rb.velocity = movement * moveSpeed+projectedVelocity;
         }
-        else if (IsGround==false)
+        else if (IsGround==false)//空にいる
         {
             Debug.Log("IsGroundfalse");
-            // 力を相対的に加える
+            // 力を相対的に加える(物理的挙動)
             rb.AddForce(movement * movePower);
         }
-        else{
+        else{//地面で弓をつがえている(ms低下)
             Vector3 projectedVelocity = Vector3.Project(rb.velocity, Character.transform.up);
             rb.velocity = movement * moveSpeed/2 + projectedVelocity;
         }
     }
 
-    private void ChengeGravity()
+    private void ChengeGravity()//重力変更回り
     {
+        //方向転換にかける時間の管理
         elapsedTime += Time.deltaTime;
 
         if (Input.GetMouseButtonDown(1))
         {
             SE.SEgravity();
 
-            if (Input.GetKey(KeyCode.LeftShift) )
+            if (Input.GetKey(KeyCode.LeftShift) )//Shift＋？
             {
+                //向いている方向に重力を設定
                 gravityForce = PlayerCamera.transform.forward * gravity*-1;
                 elapsedTime = 0f;
                 Quaternion fromToRotation = Quaternion.FromToRotation(Character.transform.up, PlayerCamera.transform.forward*-1);
@@ -238,10 +240,9 @@ public class PlayerController: MonoBehaviourPunCallbacks
                     Vector3 normal = hit.normal;
                     gravityForce = normal * gravity;
                     Quaternion fromToRotation = Quaternion.FromToRotation(Character.transform.up, normal);
+
                     elapsedTime = 0f;
-
                     targetToRotation = fromToRotation * Character.transform.rotation;
-
                     nowRotation = Character.transform.rotation;
                 }
             }
@@ -257,7 +258,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
             nowRotation = Character.transform.rotation;
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))//-90度回転
         {
             SE.SEgravity();
             Quaternion fromToRotation = Quaternion.AngleAxis(90, Character.transform.forward);
@@ -268,7 +269,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
 
             nowRotation = Character.transform.rotation;
         }
-        if (elapsedTime < duration)
+        if (elapsedTime < duration)//ゆっくり回転させる
         {
             Character.transform.rotation = Quaternion.Slerp(nowRotation,targetToRotation, elapsedTime / duration);
         }
@@ -301,12 +302,14 @@ public class PlayerController: MonoBehaviourPunCallbacks
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivityX * Time.deltaTime*2;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivityY * Time.deltaTime*2;
 
+        //IKのためのターゲットの位置をワールド座標系で動かす(IKrootからつながる形でIKtargetが存在する)
         IKRoot.Rotate(Character.right, -mouseY, Space.World);
         IKRoot.Rotate(Character.up, mouseX, Space.World);
-        //IKRoot.position = PlayerCamera.transform.position;
 
+        //キャラクターに対するIKrootの相対回転を算出する
         Quaternion Q = Quaternion.Inverse(Character.rotation) * IKRoot.rotation;
 
+        //キャラクターの向き(上下)を制限する
         if (Q.eulerAngles.x < 180 && Q.eulerAngles.x > ViewAngleY)
         {
 
@@ -318,9 +321,9 @@ public class PlayerController: MonoBehaviourPunCallbacks
         }
 
         Character.Rotate(0, Q.eulerAngles.y, 0);
-
+        //IKtargetの向きを見るように変更
         PlayerCamera.transform.LookAt(IKtarget, Character.transform.up);
-
+        //射撃方向を補正
         firepos.rotation = PlayerCamera.transform.rotation;
     }
 
@@ -351,6 +354,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
         }
     }
 
+    //攻撃を当てたUI表示
     public async void HitEffect()
     {
         SE.SEhit();
@@ -368,6 +372,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
         }
     }
 
+    //倒したUI表示
     public async void KillEffect()
     {
         SE.SEkill();
@@ -439,6 +444,7 @@ public class PlayerController: MonoBehaviourPunCallbacks
         }
     }
 
+    //攻撃用
     [PunRPC]
     public void Fire(int id, Vector3 gravity, Vector3 pos, Quaternion rotate,float Damage)
     {

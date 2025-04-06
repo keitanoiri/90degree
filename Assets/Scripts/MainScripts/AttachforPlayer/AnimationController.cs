@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviourPunCallbacks
 {
+    //主にAnimaterのFlagを制御する
+
     [SerializeField] SE_Player SE;
     [SerializeField] Transform spine;
     [SerializeField] Transform spine1;
@@ -48,7 +50,6 @@ public class AnimationController : MonoBehaviourPunCallbacks
             else SetMoveAnimationSpeed(1f);
 
             moveanimation();
-            //aimanimation();
         }
 
     }
@@ -89,6 +90,7 @@ public class AnimationController : MonoBehaviourPunCallbacks
         }
     }
 
+    //移動アニメーション制御
     private void moveanimation()
     {
         float horizontalkey = Input.GetAxis("Horizontal");
